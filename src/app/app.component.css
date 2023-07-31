@@ -1,0 +1,4 @@
+.nav-active:not(.navbar-brand) {
+    background-color: rgb(144, 23, 23);
+    color: #fff;
+  }

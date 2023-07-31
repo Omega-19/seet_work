@@ -1,0 +1,7 @@
+<div [@fadeInAnimation] style="opacity: 1;">
+    <button class="bg-white text-dark fs-2 mt-4" (click)="toggle()" type="button">Toggle Open/Close</button>
+  
+    <div class="open-close-container fs-3 fw-bold">
+      <p>La boîte est {{ isOpen ? 'ouverte' : 'fermée' }}</p>
+    </div>
+  </div>

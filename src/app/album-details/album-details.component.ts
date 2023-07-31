@@ -1,21 +1,49 @@
-import { Component , OnInit, Input} from '@angular/core';
-import { Album } from '../album';
-
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Album, List } from '../album';
+import { AlbumService } from '../album.service';
+import { fadeInAnimation } from '../animation.module';
 
 @Component({
   selector: 'app-album-details',
   templateUrl: './album-details.component.html',
-  styleUrls: ['./album-details.component.css']
+  styleUrls: ['./album-details.component.css'],
+  animations: [fadeInAnimation]
 })
-export class AlbumDetailsComponent implements OnInit {
-  // Classe Input permet de récupérer les data de l'enfant
-  // album est liée à une entrée [album] du parent dans le sélecteur
-  @Input() album!: Album;
-  constructor() { }
-  ngOnInit() {
-    console.log(this.album); // pour l'instant c'est undefined ... C'est normal
+// à chaque "hook" son interface
+export class AlbumDetailsComponent implements OnInit, OnChanges {
+  @Input() album: Album | undefined; // propriété liée qui sera passée par le parent
+  @Output() onPlay: EventEmitter<Album> = new EventEmitter();
+  @Output() onHide: EventEmitter<Album> = new EventEmitter();
+
+  albumLists: List[] = [];
+  songs: string[] | undefined = []; // tableau qui stock la liste des chansons de l'album
+
+  constructor(
+    private albumService: AlbumService
+  ) { }
+
+  ngOnInit(): void {
   }
-  ngOnChanges(){
+
+  // quand il y a du nouveau
+  ngOnChanges(): void {
+    if (this.album) {
+      this.songs = this.albumService.getAlbumList(this.album.id);
+    }
 
   }
+
+  play(songs: Album) {
+    // emettre un album vers le parent
+    this.onPlay.emit(songs);
+  }
+
+  shuffleAlbum(songs: string[]) {
+    this.songs = this.albumService.shuffle(songs);
+  }
+
+  hide(album: Album) {
+    this.onHide.emit(album);
+  }
+  
 }

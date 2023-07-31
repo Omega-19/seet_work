@@ -1,18 +1,28 @@
-
-<div class="col-sm-4 video">
-    <div class="card">
-        <img class="card-img-top" src="./assets/images/default_image.png" alt="Group Music">
-        <div class="card-body">
-            <h5 class="card-title">Dark</h5>
-            <p class="card-text">Punk electro</p>
-            <a href="#" class="btn btn-primary">Play >> </a>
-        </div>
+<div class="card  bg-dark mt-4" *ngIf="album">
+  <img class="card-img-top font-img" src="{{ album.url }}" alt="Group Music">
+      <div class="card-body text-white">
+        <h5 class="card-title">{{ album.title }}</h5>
+        <p class="cart-text">Name: {{ album.name}}</p>
+        <button (click)="play(album)" class="btn btn-primary">Play &gt;&gt;</button><hr>
+        <button (click)="hide(album)" class="btn btn-warning ms-2">Hide</button>
+      </div>
+      <!-- Si nous avons des sons dans la playlist -->
+      <!-- <div *ngIf="condition; then ...; else ...." -->
+        <button *ngIf="songs" (click)="shuffleAlbum(songs)" class="btn btn-success">Aléatoire</button>
+        <div *ngIf="songs; then ifBlock; else elseBlock"></div>
+        <ng-template #ifBlock>
         <ul class="list-group">
-            <li class="list-group-item active"></li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Porta ac consectetur ac</li>
-            <li class="list-group-item">Vestibulum at eros</li>
+          <li class="list-group-item bg-info-subtle fw-" *ngFor="let song of songs">
+            {{song}}
+          </li>
         </ul>
+      </ng-template>
+    
+      <!-- Au cas contraire -->
+      <ng-template #elseBlock>
+        <ul>
+          <li class="list-group-item">Pas de son pour cet album</li>
+        </ul>
+      </ng-template>
     </div>
-</div><!-- .video -->
+    

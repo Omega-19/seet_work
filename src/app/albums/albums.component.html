@@ -1,45 +1,58 @@
-<div class="col-sm-4 video">
-    <!-- AlbumDetails communication parent vers enfant -->
-    <app-album-details></app-album-details>
+<div [@fadeInAnimation]>
+    <app-search (searchAlbums)="search($event)"></app-search>
+    <div class="row  content bg-warning mt-4">
+      <app-paginate (setPaginate)="onSetPaginate($event)"></app-paginate>
+      <div class="col-sm-4" video>
+        <!-- Albums Details -->
+        <app-album-details [album]="selectedAlbum" (onPlay)="playParent($event)" (onHide)="resetSelectedAlbum()"></app-album-details>
+        
+      </div>
+      <!-- Video -->
+      <div class="col-sm-8 bg-info-subtle" music>
+        
+        <h1 class="text-black fw-bold">{{ titlePage }}</h1>
+        <!-- Pagination ng-template [for] -->
+        <ng-container *ngIf="albums.length; else notfound">
+          <div class="card text-dark fw-bold mt-4" *ngFor="let album of albums; let i = index;">
+            <div class="card-header bg-info-subtle fw-bold fs-2">
+              {{ i + 1 }} Pop <span *ngIf="status === album.id">[play]</span>
+            </div>
+            <div class="card-body bg-body-tertiary">
+              <h5 class="card-title">
+                <a class="text-maroon fw-bold fs-3" routerLink="/album/{{album.id}}">{{album.title}}</a>
+              </h5>
+              <p class="card-text">{{album.description}}</p>
+              <!-- Condition vérifiez si il n'y a des tags présent dans un album si ce n'est pas le cas la directive ne cré pas l'élément HTML dans le Component -->
+              <ul *ngIf="album.tags" class="list-inline">
+                <li *ngFor="let word of album.tags" class="list-inline-item">
+                  <span class="badge badge-info">{{word}}</span>
+                </li>
+              </ul>
+              <a href="" class="btn btn-outline-dark" href="#" role="button">en</a>
+              <!-- permet de gérer un if plus complexe -->
+              <ng-container *ngIf="album.like">
+                <img src="../../assets/svg/si-glyph-heart.svg" class="glyph-icon">
+                <small>{{album.like}}</small>
+              </ng-container>
+              <ng-template [ngIf]="album.duration">
+                <img src="../../assets/svg/si-glyph-timer.svg" class="glyph-icon">
+                <small class="mx-2">{{album.duration}} min</small>
+              </ng-template>
+              <button class="btn btn-dark" (click)="onSelect(album)">Details</button>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #notfound>
+          <div class="card">
+            <div class="card-body text-center">
+              <p class="card-text fs-4">Aucun album trouvé !😭😿</p>
+            </div>
+          </div>
+        </ng-template>
+        <!-- /Card -->
+        <!-- /Pagination -->
+      </div>
+      <!-- /music -->
     </div>
-<div class="d-flex mx-1 gap-2">
-    <nav>
-        <ul class="d-flex gap-2">
-            <li class="list-group-item"><a class="list-group-item list-group-item-action list-group-item-dark" href="#">app-music</a></li>
-            <li class="nav-item"><a class="list-group-item list-group-item-action list-group-item-dark" href="#">Home</a></li>
-            <li class="nav-item"><a class="list-group-item list-group-item-action list-group-item-dark" href="#">Se connecter</a></li>
-        </ul>
-    </nav>
-    <input type="text" placeholder="Search">
-    <button class="bg-success text-white">Search</button>
-</div>
-
-<h1>{{ titlePage }}</h1>
-
-
-<div class="container-fuild principal">
-        <div class="col-sm-8 music d-flex flex-column " >
-            <div class="card mb-5 shadow-lg border-dark" *ngFor="let album of  albums">
-                <div class="d-flex">
-                    <button class="btn btn-success btn-sm m-3 p-2 fs-4" (click)="onSelect(album)">click Me</button>
-                    <button class="btn btn-success btn-sm m-3 p-2 fs-4">Stop Me</button>
-                </div>
-                <div class="card-header bg-warning fs-1 text-black fw-bold">
-                pop
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title  fs-1">{{album.title}}</h5>
-                    <p class="card-text">{{album.description}}</p>
-                    <div class="d-flex">
-                        <a class="btn btn-outline-dark text-black bg-info-subtle mx-1 fw-bolder" href="#" role="button" *ngFor="let el of album.tags">{{ el }}</a>
-                    </div>
-  
-                    <img class="glyph-icon img-fluid mx-2" width="25px" src="../../assets/si-glyph-cloud-rain-heavy-rain.svg" />
-                    <small>{{album.like}}</small>
-                    <img class="glyph-icon img-fluid mx-2" width="25px" src="../../assets/si-glyph-heart.svg" />
-                    <small>{{album.duration}}min</small>
-                </div>
-            </div><!-- .card -->
-  
+    
   </div>
-  

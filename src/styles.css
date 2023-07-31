@@ -1,5 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
 
-button a:hover{
-    background-color: orangered;
+
+.principal{
+    height: 8rem;
+    margin: 0 4.5rem;
+    border-radius: .25rem; 
+    padding : 1rem; 
+    /* background-color: rgb(237, 151, 22); */
+}
+
+.content{
+    margin-top : 1rem;
+}
+
+
+.music.card,
+.music.pagination {
+        margin-top: 0.5rem;
+    }
+    .music.btn{ display: inline-block;  margin: 0 0.6rem; }
+.glyph-icon {
+   height: .75rem;
+   display: inline-block; margin:0.25rem;
+}
+
+.format{
+    background: rgb(189, 185, 65);
+    margin-top: 5rem;
+    margin-left: 12rem;
+    padding: 2rem;
+    padding-top: 8rem;
+    width: 50rem;
+    height:35rem;
+}
+form button{
+    margin-top: 3rem;
+}
+form label{
+    margin-bottom: 1.5rem;
+}
+
+nav{
+    background-color: bisque;
+}
+.nav-item{
+    transition: all 1s;
+}
+.nav-item:hover{
+    background-color: chartreuse;
+    font-size: large;
+    font-weight: 500;
 }

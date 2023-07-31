@@ -1,0 +1,17 @@
+<form [@fadeInAnimation] (ngSubmit)="onSubmit(formLogin)" #formLogin="ngForm" class="format">
+    <div class="form-group">
+      <label class="fw-bold fs-2" for="exampleInputEmail1">Email Address</label>
+      <input name="email" ngModel email required type="email" class="form-control bg-danger-subtle fst-italic fw-bold" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-white">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label class="fw-bold fs-2" for="exampleInputPassword1">PassWord</label>
+      <input name="password" ngModel required type="password" class="form-control bg-danger-subtle fst-italic fw-bold" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1">
+      <label class="form-check-label fs-4" for="exampleCheck1">Check me out</label>
+    </div>
+    <button [disabled]="formLogin.invalid" type="submit" class="btn btn-success fs-3 border border-5 border-white">Submit</button>
+  </form>

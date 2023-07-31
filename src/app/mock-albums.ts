@@ -1,5 +1,4 @@
 import { Album } from './album';
-import { List } from './album';
 
 export const ALBUMS: Album[] = [
     {
@@ -187,7 +186,7 @@ export const ALBUMS: Album[] = [
 
 
 // Pensez à définir la classe List pour définir le type des listes de chansons ci-dessous :
-export const ALBUM_LISTS: List []  = [
+export const ALBUM_LISTS  = [
     {
       "id": "1",
       "list": [
