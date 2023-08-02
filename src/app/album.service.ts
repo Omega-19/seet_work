@@ -80,4 +80,25 @@ export class AlbumService {
   paginate(start: number, end: number): Album[] {
     return this.getAlbums().slice(start, end)
    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 }
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AlbumService {
+
+  constructor() { }
+}
+=======
+}
+>>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
+=======
+}
+>>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
+=======
+}
+>>>>>>> feature/euloge

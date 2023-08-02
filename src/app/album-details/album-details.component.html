@@ -1,1 +1,11 @@
-<p>album-details works!</p>
+<div class="card" *ngIf="">
+    <img class="card-img-top" src="" alt="Group Music">
+    <div class="card-body">
+        <h5 class="card-title">{{titre_de_l_album}}</h5>
+        <p class="card-text">{{nom_de_l_album}}</p>
+        <a href="#" class="btn btn-primary" (click)="">Play >> </a>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item active" *ngFor="">{{element_du_tableau}}</li>
+    </ul>
+</div>
