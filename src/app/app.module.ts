@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -15,6 +16,7 @@ import { AlbumDescriptionComponent } from './album-description/album-description
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { OpenCloseComponent } from './open-close/open-close.component';
 import { PaginateComponent } from './paginate/paginate.component';
+import { AudioPlayerComponent } from './audio-player/audio-player.component';
 
 
 /**
@@ -42,6 +44,7 @@ const albumsRoutes: Routes = [
     PageNotFoundComponent,
     OpenCloseComponent,
     PaginateComponent,
+    AudioPlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ const albumsRoutes: Routes = [
      * forRoot: méthode utilisée pour définir les routes à utilisés dans le module de routage.
      */
     RouterModule.forRoot(albumsRoutes),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

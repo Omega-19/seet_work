@@ -15,7 +15,11 @@
         <a class="nav-link" routerLink="/oc">Open-Close</a>
       </li>
     </ul>
+    <p *ngIf="count">{{ count }} secondes écoulées</p>
   </nav>
+  <!-- <app-chronometre></app-chronometre> -->
   <!-- La partie où sera rendu tous les enfants de ce composant -->
+  <app-audio-player>
+  </app-audio-player>
   <router-outlet></router-outlet>
 </div>

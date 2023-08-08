@@ -28,14 +28,19 @@ export class AlbumDetailsComponent implements OnInit, OnChanges {
   // quand il y a du nouveau
   ngOnChanges(): void {
     if (this.album) {
-      this.songs = this.albumService.getAlbumList(this.album.id);
+     this.albumService.getAlbumList(this.album.id).subscribe(
+      (albumList) => {
+        this.songs = albumList.list;
+      }
+     );
     }
 
   }
-
+//commmunication de l'enfant vers le parent
   play(songs: Album) {
     // emettre un album vers le parent
     this.onPlay.emit(songs);
+    this.albumService.switchOn(songs);
   }
 
   shuffleAlbum(songs: string[]) {

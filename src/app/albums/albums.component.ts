@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { environment } from "src/environnement/environnement";
+import { environment } from "src/environments/environment";
 import { Album } from "../album";
 import { AlbumService } from "../album.service";
 import { fadeInAnimation } from "../animation.module";
@@ -23,11 +23,16 @@ export class AlbumsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.albums = this.albumService
+    this.albumService
               // .order((a: Album, b: Album) => a.duration - b.duration) // ordonne les albums
               // .limit(0, this.albumService.count()) // renvoyer une sous-partie
               // .getAlbums(); // recupère les albums
-              .paginate(0, environment.numberPage)
+              .paginate(0,this.albumService.paginateNumberPage())
+              .subscribe({
+                next: (alb: Album[]) => {
+                  this.albums = alb
+                }
+              });
   }
 
   onSelect(album: Album) {
@@ -50,6 +55,9 @@ export class AlbumsComponent implements OnInit {
   }
   onSetPaginate($event : {start: number, end: number}){
     //récupérer les albums compris entre [start et end]
-    this.albums = this.albumService.paginate($event.start, $event.end)
+    this.albumService.paginate($event.start, $event.end)
+    .subscribe({
+      next: (alb: Album[]) => this.albums = alb
+    });
   }
 }

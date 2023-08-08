@@ -3,12 +3,11 @@
     <div class="row  content bg-warning mt-4">
       <app-paginate (setPaginate)="onSetPaginate($event)"></app-paginate>
       <div class="col-sm-4" video>
-        <!-- Albums Details -->
+        <!-- Insertion de l'Albums Details (récupération de la propriété depuis le parent) Albumcomponent est le parent de albumDetails -->
         <app-album-details [album]="selectedAlbum" (onPlay)="playParent($event)" (onHide)="resetSelectedAlbum()"></app-album-details>
-        
       </div>
       <!-- Video -->
-      <div class="col-sm-8 bg-info-subtle" music>
+      <div class="col-sm-8 bg-warning" music>
         
         <h1 class="text-black fw-bold">{{ titlePage }}</h1>
         <!-- Pagination ng-template [for] -->

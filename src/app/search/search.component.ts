@@ -17,12 +17,22 @@ export class SearchComponent {
   ) {}
 
   onSubmit(form: NgForm) {
-    const results: Album[] = this.albumService.search(form.value.word);
-    this.searchAlbums.emit(results);
+    const results = this
+    .albumService.search(form.value.word)
+    .subscribe({
+      next: (alb: Album[]) => {
+        if (alb.length > 0){
+          this.searchAlbums.emit(alb);
+        }
+      }
+    })
   }
 
   onChangeEmit($event: string) {
-    const results: Album[] = this.albumService.search($event);
-    this.searchAlbums.emit(results);
+    const results= this
+    .albumService.search($event)
+    .subscribe((alb: Album[]) => {
+      this.searchAlbums.emit(alb);
+    })
   }
 }
