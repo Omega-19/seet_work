@@ -1,11 +1,27 @@
-<div class="card" *ngIf="">
-    <img class="card-img-top" src="" alt="Group Music">
+<div [@fadeInAnimation] class="card bg-info-subtle" *ngIf="album">
+    <img src="{{ album.url }}" alt="Group Music" class="card-img-top">
     <div class="card-body">
-        <h5 class="card-title">{{titre_de_l_album}}</h5>
-        <p class="card-text">{{nom_de_l_album}}</p>
-        <a href="#" class="btn btn-primary" (click)="">Play >> </a>
+      <h5 class="card-title">{{ album.title }}</h5>
+      <p class="cart-text">Name: {{ album.name}}</p>
+      <button (click)="play(album)" class="btn btn-primary">Play &gt;&gt;</button>
+      <button (click)="hide(album)" class="btn btn-warning ms-2">Hide</button>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item active" *ngFor="">{{element_du_tableau}}</li>
-    </ul>
-</div>
+    <!-- Si nous avons des sons dans la playlist -->
+    <!-- <div *ngIf="condition; then ...; else ...." -->
+      <button *ngIf="songs" (click)="shuffleAlbum(songs)" class="btn btn-success fs-4">Aléatoire</button>
+      <div *ngIf="songs; then ifBlock; else elseBlock"></div>
+      <ng-template #ifBlock>
+      <ul class="list-group">
+        <li class="list-group-item bg-warning-subtle fs-2" *ngFor="let song of songs">
+          {{song}}
+        </li>
+      </ul>
+    </ng-template>
+  
+    <!-- Au cas contraire -->
+    <ng-template #elseBlock>
+      <ul>
+        <li class="list-group-item">Pas de son pour cet album</li>
+      </ul>
+    </ng-template>
+  </div>

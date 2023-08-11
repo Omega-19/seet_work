@@ -1,34 +1,53 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Album, List } from '../album';
+import { AlbumService } from '../album.service';
+import { fadeInAnimation } from '../animation.module';
+import { ALBUMS } from '../mock-albums';
 
 @Component({
   selector: 'app-album-details',
   templateUrl: './album-details.component.html',
-  styleUrls: ['./album-details.component.css']
+  styleUrls: ['./album-details.component.css'],
+  animations: [fadeInAnimation]
 })
-export class AlbumDetailsComponent implements OnInit{
-  // Propriété de stockage de l'album en instance au niveau du parent
-  @Input() album : Album;
+// à chaque "hook" son interface
+export class AlbumDetailsComponent implements OnInit, OnChanges {
+  @Input() album: Album | undefined; // propriété liée qui sera passée par le parent
+  @Output() onPlay: EventEmitter<Album> = new EventEmitter();
+  @Output() onHide: EventEmitter<Album> = new EventEmitter();
 
-  // Propriété emettrice de l'album en instance vers le parent
-  @Output() onPlay : EventEmitter<Album> = new EventEmitter();
+  albumLists: List[] = [];
+  /** tableau qui stock la liste des chansons de l'album */
+  songs: string[] | undefined = [];
 
-  // Propriété stockant la liste de l'album en instance
-  albumList : List[];
+  constructor(
+    private albumService: AlbumService
+  ) { }
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  ngOnChanges() {
-    this.albumList = ALBUMS_LIST.find((album) => album.id === this.album.id).list;
+  ngOnInit(): void {
   }
 
-  /**
-   * Méthode pour l'émission de l'album vers le parent
-   * @param album Album
-   */
-  play(album : Album) {
-    this.onPlay.emit(album);
+  // quand il y a du nouveau
+  ngOnChanges(): void {
+    if (this.album) {
+      this.albumService.getAlbumList(this.album.id).subscribe(
+        (albumList) => { this.songs = albumList.list }
+      );
+    }
+
   }
 
+  play(songs: Album) {
+    // emettre un album vers le parent
+    this.onPlay.emit(songs);
+    this.albumService.switchOn(songs);
+  }
+
+  shuffleAlbum(songs: string[]) {
+    this.songs = this.albumService.shuffle(songs);
+  }
+
+  hide(album: Album) {
+    this.onHide.emit(album);
+  }
 }

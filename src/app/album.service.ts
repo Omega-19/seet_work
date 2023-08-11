@@ -1,104 +1,205 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { environment } from 'src/environment/environment';
-import { Album, List, SortAlbumCallback } from './album';
-// import { AlbumDetailsComponent } from './album-details/album-details.component';
-import { ALBUMS, ALBUM_LISTS } from './mock-albums';
+import { map, Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Album, List } from './album';
+import * as _ from 'lodash';
+// import { update } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlbumService {
 
-  private _albums: Album[] = ALBUMS
-  private _albumsList: List[] = ALBUMS_LISTS;
+  private _albumsUrl: string = environment.albumUrl;
+  private _albumListUrl: string = environment.albumListUrl;
 
-  sendCurrentNumberPage = new Subject<number>
+  subjectAlbum = new Subject<Album>();
+  // Observable qui notifie aux abonné la page actuelle
+  sendCurrentNumberPage = new Subject<number>();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+  // constructor(private db: Database) { }
 
-  getAlbums() {
-    return this._albums.sort((a: Album, b: Album) => a.duration - b.duration)
-  };
+  /**
+   * Fonction de recherche de tous les albums
+   * @returns Retourne la liste de tous les albums
+   */
+  getAlbums(): Observable<Album[]> {
+    //La première utilisation
+    return this.http.get<Album[]>(this._albumsUrl).pipe(
+      map((albums: Album[]) => {
+        return albums.sort(
+          (a: Album, b: Album) => b.duration - a.duration
+        );
+      })
+    );
 
+    // //L'utilisation avec le database
 
-  getAlbum(id: string): Album | undefined {
-    return this._albums.find(album => album.id === id)
+    // const albumRef = ref(this.db, 'albums');
+    // return objectVal<Album[]>(albumRef).pipe(
+    //   map((albums: Album[]) => {
+    //         return albums.sort(
+    //           (a: Album, b: Album) => b.duration - a.duration
+    //         );
+    //       })
+    // )
+
+    //récupération en une ligne
+
   }
 
-  getAlbumList(id: string): List | undefined {
-    return this._albumsList.find(list => list.id === id)
-  }
-
-  count() {
-    return this._albums.length
-  }
-
-  paginate(start: number, end: number): Album[] {
-    return this.getAlbums().slice(start, end)
-  }
-
-
-  // Methode pour ordonner les albums
-  oder(callBack: SortAlbumCallback): AlbumService {
-    this._albums.sort(callBack);
-    return this;
-  }
-
-  // Méthode pour afficher le nombre d'album qui doit s'afficher sur la page
-
-  limit(start: number, end: number): AlbumService {
-    this._albums = this._albums.slice(start, end);
-    return this;
-  }
-
-  // Méthode pour faire la recherche des albums et les afficher 
-  search(word: string): Album[] {
-    return this._albums
-      .filter(album => {
-        return album.title
-          .toLowercase()
-          .includes(word.trim().toLowerCase());
-      });
+  /**
+   * Fonction de recherche d'un album particulier
+   * @param id identifiant de l'album à rechercher
+   * @returns Retourne l'album correspondant; undefined si aucun identifiant ne correspond
+   */
+  getAlbum(id: string): Observable<Album> | undefined {
+    return this.http.get<Album>(this._albumsUrl + '/' + id)
+      .pipe(
+        map((album: Album) => album)
+      );
+//équivalent  => http.get<Album>(this._albumsUrl + "albums")
+    // const albumRef = ref(this.db, "albums")
   }
 
 
-  // Methode pour afficher le nombre d'album par changement de pagination
+  /**
+   * Fonction de recherche des sons d'un albums
+   * @param id identifiant de l'album à rechercher
+   * @returns La référence sera retourné si elle existe; undefined si l'id n'existe pas dans la liste.
+   */
+  getAlbumList(id: string): Observable<List> {
+    return this.http.get<List>(this._albumListUrl + '/' + id);
 
+    //2e méthode avec les database
+  /**const albumListRef = ref(this.db, `albumListRef/${id}`)
+  return ObjectVal<List>(albumListRef)**/
+  }
+
+  /**
+   * Fonction qui retourne le nombre d'albums
+   * @returns Le nombre d'albums
+   */
+  count(): Observable<number> {
+    return this.http.get<Album[]>(this._albumsUrl).pipe(
+      map((albums: Album[]) => albums.length)
+    );
+      // const albumsRef =ref (this.db,'albums')
+    // const counter = ref(this.db, `counter/${id}`)
+
+    // return ObjectVal<Album[]>(albumsRef).pipe()
+  }
+
+
+  // order(callback: SortAlbumCallback): AlbumService {
+  //   this._albums.sort(callback);
+  //   return this; // retourne le service pour permettre le chainage de méthodes
+  // }
+
+  // limit(start: number, end: number): AlbumService {
+  //   this._albums = this._albums.slice(start, end)
+  //   return this; // retourne le service pour permettre le chainage de méthodes
+  // }
+
+  paginate(start: number, end: number): Observable<Album[]> {
+    return this.http.get<Album[]>(this._albumsUrl).pipe(
+      map((albums: Album[]) => {
+        const res = _.values(albums)
+        console.log('sans lodash ', albums);
+        console.log('avec lodash', res);
+        return res
+      }),
+      map(
+        (albums) => albums.sort(
+          (a, b) => b.duration - a.duration
+        ).slice(start, end)
+      )
+    );
+  }
+/**
+ * Type de requête
+ *
+ * get  => récupérer une resource
+ * post => envoyer une resource
+ * put  => m-à-j une resource
+ */
+  search(word: string): Observable<Album[]> {
+    return this.http.get<Album[]>(this._albumsUrl).pipe(
+      map((albums: Album[]) => {
+        // parcourir le tableau d'albums
+        return albums.filter(album => {
+          // retourner ceux contenant le string de la variable "word"
+          return album.title
+            .toLowerCase()
+            .includes(word.trim().toLowerCase());
+        });
+
+      })
+    )
+  }
+
+  // searchV2(word: string): Album[] {
+  //   let re = new RegExp(word.trim(), "g");
+  //   return this._albums.filter(album => album.title.match(re));
+  // }
+
+  shuffle(songs: string[]) {
+    for (let i = songs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [songs[i], songs[j]] = [songs[j], songs[i]];
+    }
+    return songs;
+  }
+
+  /**
+   * Méthode qui renvoi le nombre d'album qu'on
+   * aura par page
+   */
   paginateNumberPage(): number {
     return environment.numberPage;
   }
 
-  //Méthode qui signale à tous les composants de la page actuelle le numéro de la page en cours
-
+  /**
+   * Méthode qui signale à tous les composants
+   * la page actuelle
+  * @param numberPage numéro de la page actuelle
+   * @returns
+   */
   currentPage(numberPage: number) {
-    return this.sendCurrentNumberPage.next(numberPage)
+    return this.sendCurrentNumberPage.next(numberPage);
   }
 
-}
+  /**
+   * Méthode qui permet de changer le status d'un album à "on"
+   * @param album : l'album dont le status doit passer à "on"
+  */
+  switchOn(album: Album): void {
+    album.status = "on";
+    // le code ci-dessous s'exécute car on y souscrit
+    this.http.put<void>(this._albumsUrl + '/' + album.id, album)
+            .subscribe({
+              next: (data) => console.log(data),
+              error: (err) => console.warn(err),
+              complete: () => this.subjectAlbum.next(album)
+            })
+  }
 
-  paginate(start: number, end: number): Album[] {
-    return this.getAlbums().slice(start, end)
-   }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-}
-import { Injectable } from '@angular/core';
+  /**
+    * Méthode qui permet de changer le status d'un album à "off"
+    * @param album : l'album dont le status doit passer à "off"
+    */
+  switchOff(album: Album): void {
+    album.status = "off";
+    /**
+     * renvoi un observable, est ne s'exécute
+     * donc qu'à la souscription. Du coup,
+     * il faut il souscrire, pour l'exécuter
+     */
+    this.http.put<void>(`${this._albumsUrl}/${album.id}`, album)
+              .subscribe(() => {});
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AlbumService {
-
-  constructor() { }
+    // update(ref(this.db, `album/${albumList}`, album))
+  }
 }
-=======
-}
->>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
-=======
-}
->>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
-=======
-}
->>>>>>> feature/euloge

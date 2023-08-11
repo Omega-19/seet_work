@@ -1,36 +1,17 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<p>login works!</p>
-=======
-=======
->>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
-=======
->>>>>>> feature/euloge
-<div [@fadeInAnimation]>
-    <form action="/action_page.php ">
-        <div class="mb-3 mt-3 container">
-          <label for="email">Email:</label>
-          <input type="email" class="form-control" id="email" placeholder="Entrer votre Email" name="email">
-        </div>
-        <div class="mb-3 container">
-          <label for="pwd">Mot de passe:</label>
-          <input type="password" class="form-control" id="pwd" placeholder="Entrer votre mot de passe" name="pswd">
-        </div>
-        <div class="form-check mb-3 container">
-          <label class="form-check-label ">
-            <input  type="checkbox"  class="form-check-input" name="remember"> Se souvenir de moi
-          </label>
-        </div>
-        <button type="submit" class="btn login " >Se connecter</button>
-      </form>
+<form [@fadeInAnimation] (ngSubmit)="onSubmit(formLogin)" #formLogin="ngForm">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input name="email" ngModel email required type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+      placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
   </div>
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
-=======
->>>>>>> ce6a0a420d9d6625ad70c652c8734460b404259e
-=======
->>>>>>> feature/euloge
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input name="password" ngModel required type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button [disabled]="formLogin.invalid" type="submit" class="btn btn-primary">Submit</button>
+</form>
