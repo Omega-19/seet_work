@@ -1,5 +1,28 @@
 <div class="container-fuild principal">
-  <nav class="navbar navbar-expand-lg navbar-light">
-  </nav>
-  <app-albums></app-albums>
+    <nav class="navbar navbar-expand-lg bg-dark-subtle">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+        <li class="nav-item ">
+          <a class="navbar-brand nav-link " routerLink="/">app-music</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/">Home</a>
+  
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login">Se connecter</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/admin">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/template">Template Form</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/reactive">Reactive Form</a>
+        </li>
+      </ul>
+      <p *ngIf="count">{{ count }}</p>
+    </nav>
+    <app-audio-player></app-audio-player>
+    <router-outlet></router-outlet>
   </div>
