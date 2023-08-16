@@ -39,6 +39,7 @@ export class AlbumService {
 
     // const albumRef = ref(this.db, 'albums');
     // return objectVal<Album[]>(albumRef).pipe(
+    // map
     //   map((albums: Album[]) => {
     //         return albums.sort(
     //           (a: Album, b: Album) => b.duration - a.duration

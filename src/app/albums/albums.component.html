@@ -1,4 +1,4 @@
-<div [@fadeInAnimation] class="bg-warning-subtle">
+<div [@fadeInAnimation]>
     <app-search (searchAlbums)="search($event)"></app-search>
     <div class="row content ">
       <div class="col-sm-4" video>
@@ -7,17 +7,17 @@
       </div>
       <!-- Video -->
       <div class="col-sm-8" music>
-        <h1>{{ titlePage }}</h1>
+        <h1 class="text-white">{{ titlePage }}</h1>
         <!-- Pagination ng-template [for] -->
         <app-paginate (setPaginate)="onSetPaginate($event)"></app-paginate>
         <ng-container *ngIf="albums; else notfound">
-          <div class="card" *ngFor="let album of albums; let i = index;">
+          <div class="card mb-3" *ngFor="let album of albums; let i = index;">
             <div class="card-header bg-warning">
               {{ i + 1 }} Pop <span *ngIf="status === album.id">[play]</span>
             </div>
             <div class="card-body  bg-primary-subtle">
               <h5 class="card-title">
-                <a class="text-info" routerLink="/album/{{album.id}}">{{album.title}}</a>
+                <a class="text-dark fw-bold fs-2" routerLink="/album/{{album.id}}">{{album.title}}</a>
               </h5>
               <p class="card-text">{{album.description}}</p>
               <!-- Condition vérifiez si il n'y a des tags présent dans un album si ce n'est pas le cas la directive ne cré pas l'élément HTML dans le Component -->
@@ -29,14 +29,14 @@
               <a href="" class="btn btn-outline-dark" href="#" role="button">en</a>
               <!-- permet de gérer un if plus complexe -->
               <ng-container *ngIf="album.like">
-                <img src="../../assets/svg/si-glyph-heart.svg" class="glyph-icon">
+                <img src="../assets/svg/si-glyph-heart.svg" class="glyph-icon">
                 <small>{{album.like}}</small>
               </ng-container>
               <ng-template [ngIf]="album.duration">
-                <img src="../../assets/svg/si-glyph-timer.svg" class="glyph-icon">
+                <img src="../assets/svg/si-glyph-timer.svg" class="glyph-icon">
                 <small>{{album.duration}} min</small>
               </ng-template>
-              <button class="btn btn-dark" (click)="onSelect(album)">Details</button>
+              <button class="btn btn-dark m-2" (click)="onSelect(album)">Details</button>
             </div>
           </div>
         </ng-container>

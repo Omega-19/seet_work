@@ -29,5 +29,9 @@
 }
 
 .body{
-    background-color: chartreuse;
+    background-color: rgb(66, 91, 66);
+}
+
+.detail-tab{
+    margin-top: 12rem;
 }

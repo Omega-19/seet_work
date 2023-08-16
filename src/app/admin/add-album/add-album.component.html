@@ -7,7 +7,8 @@
             <input formControlName="name" type="text" class="form-control" placeholder="Name">
             <div *ngIf="name?.invalid && name?.touched" class="alert alert-danger">
                 <p *ngIf="name?.errors?.['required']">Ce champs est requis.</p>
-                <p *ngIf="name?.errors?.['minlength']">Ce champs doit avoir une longueur minimal de {{name?.errors?.['minlength']?.requiredLength}}caractères.</p>
+                <p *ngIf="name?.errors?.['minlength']">Ce champs doit avoir une longueur minimal de
+                    {{name?.errors?.['minlength']?.requiredLength}}caractères.</p>
             </div>
         </div>
         <div class="form-group">
@@ -31,7 +32,7 @@
         </div>
         <div class="form-group">
             <label for="duration">duration :</label>
-            <input formControlName="duration" type="text" class="form-control" id="duration" placeholder="Duration">
+            <input formControlName="duration" type="text" class="form-control mb-2" id="duration" placeholder="Duration">
             <div *ngIf="duration?.invalid && duration?.touched" class="alert alert-danger">
                 <p *ngIf="duration?.errors?.['required']">Ce champs est requis.</p>
                 <p *ngIf="duration?.errors?.['pattern']">Ce champs doit suivre le format d'expression régulière
@@ -54,6 +55,16 @@
                 </div>
             </textarea>
         </div>
-        <button disabled="albumForm.invalid" type="submit" class="btn btn-primary">Add</button>
+        <div formArrayName="tags">
+            <h2>Etiquettes de l'album</h2>
+
+            <button type="button" (click)="addTags()" class="btn btn-secondary m-2">+ Ajouter une étiquette</button>
+
+            <div *ngFor="let tag of tags.controls; let i = index" class="form-group m-0 p-0">
+                <label for="tag -{{i}}">Tag: </label> <br>
+                <input [formControlName]="i" id="tag -{{i}}" type="text" class="form-control ml-4 mb-2" placeholder="Tags" style="width: 300px">
+            </div>
+        </div>
+        <button [disabled]="albumForm.invalid" type="submit" class="btn btn-primary">Add</button>
     </form>
 </div>

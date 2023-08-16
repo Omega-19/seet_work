@@ -10,7 +10,7 @@ import { fadeInAnimation } from "../animation.module";
   animations: [fadeInAnimation]
 })
 export class AlbumsComponent implements OnInit {
-  titlePage: string = "Page princiaple Albums Music";
+  titlePage: string = "Page principale Albums Music";
   albums!: Album[];
   selectedAlbum: Album| undefined; // je suis sur qu'une valeur sera passé au moment opportun
   status: string | null = null;

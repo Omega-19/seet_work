@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormGroup, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlbumService } from '../../album.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class AddAlbumComponent implements OnInit {
   albumForm!: FormGroup;
   constructor(
     public fb: FormBuilder,
+    private router: Router,
 
   ) { }
   ngOnInit(): void {
@@ -49,6 +51,13 @@ export class AddAlbumComponent implements OnInit {
           Validators.minLength(15)
         ]
       ],
+      //rendre dynamique les champs de saisies
+      tags: this.fb.array([
+        this.fb.control('')
+      ]) ,
+      // tags: new FormArray([
+      //   new FormControl('')
+      // ]) ,
       status: 'off',
     })
   }
@@ -60,8 +69,20 @@ export class AddAlbumComponent implements OnInit {
   get title(){return this.albumForm.get('title')}
   get duration(){return this.albumForm.get('duration')}
   get description(){return this.albumForm.get('description')}
+  get tags(){return this.albumForm.get('tags') as FormArray}
 
   onSubmit() {
+    //envoi dans la BD
     console.log(this.albumForm.value);
+    //Rediriger sur la page "admin"
+    this.router.navigate(['/admin'], {
+      queryParams: {
+        message: "Album-ajout-E-avec-succEs",
+        model: "text-davinci-002-render-sha"
+      }})
+  }
+
+  addTags(){
+    this.tags.push(this.fb.control('',[Validators.required]))
   }
 }
