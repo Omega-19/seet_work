@@ -38,7 +38,7 @@
     }
 }
 /* *************Mobile****************** */
-@media screen and (min-width:481px) and (max-width:779px){
+@media screen and (min-width:200px) and (max-width:779px){
     .grid{
         display: flex;
         flex-direction: column;
