@@ -1,29 +1,59 @@
 <p>add-album works!</p>
 <div class="container-sm">
-    
-    <form>
+
+    <form [formGroup]="albumForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label for="name">Name :</label>
-            <input type="text" class="form-control">
+            <input formControlName="name" type="text" class="form-control" placeholder="Name">
+            <div *ngIf="name?.invalid && name?.touched" class="alert alert-danger">
+                <p *ngIf="name?.errors?.['required']">Ce champs est requis.</p>
+                <p *ngIf="name?.errors?.['minlength']">Ce champs doit avoir une longueur minimal de {{name?.errors?.['minlength']?.requiredLength}}caractères.</p>
+            </div>
         </div>
         <div class="form-group">
             <label for="ref">Ref :</label>
-            <input type="text" class="form-control" id="ref" placeholder="Ref">
+            <input formControlName="ref" type="text" class="form-control" id="ref" placeholder="Ref">
+            <div *ngIf="ref?.invalid && ref?.touched" class="alert alert-danger">
+                <p *ngIf="ref?.errors?.['required']">Ce champs est requis.</p>
+                <p *ngIf="ref?.errors?.['pattern']">Ce champs doit suivre le format d'expression régulière
+                    <strong><em>{{ref?.errors?.['pattern']?.requiredPattern}}</em></strong>.
+                    <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Regular_expressions"
+                        target="_blank">En savoir plus sur les expressions régulières</a>
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label for="title">Title :</label>
-            <input type="text" class="form-control" id="title" placeholder="Title">
+            <input formControlName="title" type="text" class="form-control" id="title" placeholder="Title">
+            <div *ngIf="title?.invalid && title?.touched" class="alert alert-danger">
+                <p *ngIf="title?.errors?.['required']">Ce champs est requis.</p>
+            </div>
         </div>
         <div class="form-group">
             <label for="duration">duration :</label>
-            <input type="text" class="form-control" id="duration" placeholder="Duration">
+            <input formControlName="duration" type="text" class="form-control" id="duration" placeholder="Duration">
+            <div *ngIf="duration?.invalid && duration?.touched" class="alert alert-danger">
+                <p *ngIf="duration?.errors?.['required']">Ce champs est requis.</p>
+                <p *ngIf="duration?.errors?.['pattern']">Ce champs doit suivre le format d'expression régulière
+                    <strong><em>{{duration?.errors?.['pattern']?.requiredPattern}}</em></strong>.
+                    <a href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Guide/Regular_expressions"
+                        target="_blank">En savoir plus sur les expressions régulières</a>
+                </p>
+                <p *ngIf="duration?.errors?.['max']">La valeur saisie ne doit pas être supérieure à
+                    {{duration?.errors?.['max']?.max}}
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" rows="3" class="form-control mb-2" placeholder="Description">
-
+            <textarea formControlName="description" id="description" rows="3" class="form-control mb-2"
+                placeholder="Description">
+                <div *ngIf="description?.invalid && description?.touched" class="alert alert-danger">
+                    <p *ngIf="description?.errors?.['required']">Ce champs est requis.</p>
+                    
+                </div>
             </textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button disabled="albumForm.invalid" type="submit" class="btn btn-primary">Add</button>
     </form>
 </div>
